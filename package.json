@@ -1,15 +1,17 @@
 {
-	"name": "uTorrent WebUI",
+	"name": "utorrent-webui",
+    "version": "0.0.1",
 	"description": "Alternative WebUI for uTorrent based on OpenUI5",
 	"author": "ghostxwheel <ghostxwheel@gmail.com>",
 	"scripts": {
-	  "start": "node utorrent/server.js"
+	  "start": "node server.js"
 	},
-	"main": "utorrent/server.js",
+    "repository": "https://github.com/ghostxwheel/utorrent-webui",
+	"main": "server.js",
 	"dependencies": {
-	  "compression": "latest",
-	  "express": "latest",
-	  "serve-index": "latest",
-	  "http-proxy": "latest"
+	  "compression": "1.5.0",
+	  "express": "4.13.0",
+	  "serve-index": "1.7.0",
+	  "http-proxy": "1.11.1"
 	}
 }
