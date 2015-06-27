@@ -1,0 +1,17 @@
+<sap.ui.core.mvc:View controllerName="view.Login"
+    xmlns="sap.m"
+    xmlns:sap.ui.core.mvc="sap.ui.core.mvc" >
+    <Page title="uTorrent Remote Login">
+        <content>
+            <Label text="User" width="100%"></Label>
+            <Input width="100%" value="{/username}"></Input>
+            <Label text="Password" width="100%"></Label>
+            <Input width="100%" type="Password" value="{/password}"></Input>
+        </content>
+        <footer>
+            <Bar> 
+        		<contentMiddle><Button text="Login" width="100%" press="onButtonLogin" /></contentMiddle> <!-- sap.ui.core.Control -->
+            </Bar>
+        </footer>
+    </Page>
+</sap.ui.core.mvc:View>
