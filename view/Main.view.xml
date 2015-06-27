@@ -1,0 +1,49 @@
+<sap.ui.core.mvc:View controllerName="view.Main"
+    xmlns="sap.m"
+    xmlns:sap.ui.core="sap.ui.core"
+    xmlns:sap.ui.core.mvc="sap.ui.core.mvc" >
+    <Page>
+        <customHeader>
+            <Bar>
+        		<contentLeft></contentLeft> <!-- sap.ui.core.Control -->
+        		<contentMiddle><Label text="uTorrent Downloader" /></contentMiddle> <!-- sap.ui.core.Control -->
+        		<contentRight><Button icon="sap-icon://synchronize" press="onRefresh" /></contentRight> <!-- sap.ui.core.Control -->
+            </Bar>
+        </customHeader>
+        <content>
+            <Label text="Add url magnet link" width="100%"></Label>
+            <Input width="100%" id="torrentUrl"></Input>
+            <Button text="Add" width="100px" press="onAddUrl"></Button>
+            <List headerText="Downloading" noDataText="No data" items="{/downloading}">
+                <customData>
+                    <sap.ui.core:CustomData key="sap-ui-fastnavgroup" value="true" writeToDom="true"></sap.ui.core:CustomData>
+                    <sap.ui.core:CustomData key="sap-ui-fastnavgroup" value="true" writeToDom="true"></sap.ui.core:CustomData>
+                </customData>
+                <items>
+                    <StandardListItem type="Navigation" counter="0" title="{2}" description="{21}"></StandardListItem>
+                </items>
+                <swipeContent>
+                  <Button
+                    text="Remove torrent"
+                    type="Reject"
+                    press="onTorrentRemove" />
+                </swipeContent>
+            </List>
+            <List headerText="Downloaded" noDataText="No data" items="{/torrents}">
+                <customData>
+                    <sap.ui.core:CustomData key="sap-ui-fastnavgroup" value="true" writeToDom="true"></sap.ui.core:CustomData>
+                </customData>
+                <items>
+                    <StandardListItem type="Navigation" counter="0" title="{2}" description="{21}">
+                    </StandardListItem>
+                </items>
+                <swipeContent>
+                  <Button
+                    text="Remove torrent"
+                    type="Reject"
+                    press="onTorrentRemove" />
+                </swipeContent>
+            </List>
+        </content>
+    </Page>
+</sap.ui.core.mvc:View>
