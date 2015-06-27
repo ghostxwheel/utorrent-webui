@@ -1,6 +1,6 @@
 CACHE MANIFEST
  
-# Version 1.01
+# Version 1.02
 
 NETWORK:
 *
@@ -8,8 +8,6 @@ NETWORK:
 CACHE:
 /resources/sap-ui-core.js
 /resources/sap/ui/thirdparty/jquery-mobile-custom.js
-/resources/sap/ui/core/library-preload.json
-/resources/sap/m/library-preload.json
 /resources/sap/ui/core/library.js
 /resources/sap/ui/core/themes/sap_bluecrystal/library.css
 /resources/sap/m/library.js
