@@ -1,6 +1,6 @@
 CACHE MANIFEST
  
-# Version 1.02
+# Version 1.03
 
 NETWORK:
 *
@@ -54,7 +54,6 @@ CACHE:
 /resources/sap/m/Popover.js
 /resources/sap/m/StandardListItem.js
 /resources/sap/m/Table.js
-/resources/sap/m/messagebundle_en_US.properties
 /resources/sap/m/messagebundle_en.properties
 /resources/sap/ui/core/InvisibleText.js
 /resources/sap/ui/model/json/JSONModel.js
