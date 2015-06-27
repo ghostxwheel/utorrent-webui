@@ -1,0 +1,6 @@
+{
+	"scripts": {
+	  "start": "supervisor server.js"
+	},
+	"main": "server.js"
+}
