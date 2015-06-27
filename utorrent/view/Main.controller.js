@@ -25,6 +25,9 @@ sap.ui.controller("view.Main", {
 	    
 	    jQuery.ajax({
 	        url:"/gui/?token=" + window.token + "&action=remove&hash=" + strHash + "&t=" + Date.now() ,
+			headers: {
+				"Authorization": window.authorization
+			},
 	        success: function() {
 	            this.onRefresh();
 	        }.bind(this) ,
@@ -40,6 +43,9 @@ sap.ui.controller("view.Main", {
 	    
 	    jQuery.ajax({
 	        url:"/gui/?token=" + window.token + "&action=add-url&s=" + strUrl + "&t=" + Date.now() ,
+			headers: {
+				"Authorization": window.authorization
+			},
 	        success: function() {
 	            this.onRefresh();
 	        }.bind(this),
@@ -52,16 +58,27 @@ sap.ui.controller("view.Main", {
 	onLoad: function() {
 	    jQuery.ajax({
 	        url:"/gui/?token=" + window.token + "&list=1",
+			headers: {
+				"Authorization": window.authorization
+			},
 	        success: function(oData) {
 	            var oParsedData = JSON.parse(oData);
 	            oParsedData.downloading = [];
 	            
 	            oParsedData.torrents.forEach(function(torrent, index, arr) {
-	                if(torrent[21].search("Downloading") > -1) {
+	                if(torrent[21].search("Downloading") > -1 || torrent[21].search("Connecting to peers") > -1) {
 	                    oParsedData.downloading.push(torrent);
 	                    arr.splice(index, 1);
 	                }
  	            });
+				
+				oParsedData.downloading.sort(function(el1, el2) {
+					return el1[2].localeCompare(el2[2]);
+				});
+				
+				oParsedData.torrents.sort(function(el1, el2) {
+					return el1[2].localeCompare(el2[2]);
+				});
 	            
 	            this.oModel.setData(oParsedData);
 	            

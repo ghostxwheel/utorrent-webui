@@ -10,5 +10,6 @@
 	  "compression": "latest",
 	  "express": "latest",
 	  "serve-index": "latest",
-	},
+	  "http-proxy": "latest"
+	}
 }

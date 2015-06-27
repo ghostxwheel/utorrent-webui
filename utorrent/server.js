@@ -3,57 +3,79 @@ var express = require("express"),
     app = express(),
     compression = require("compression"),
     //open = require("open"),
+	httpProxy = require('http-proxy'),
+	proxy = httpProxy.createProxyServer({}),
     serveIndex = require("serve-index"),
-    port = process.env.OPENSHIFT_NODEJS_PORT|| 8081,
+    port = process.env.OPENSHIFT_NODEJS_PORT || 8081,
 	host = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1',
-    publicPath = "/app",
+    publicPath = "/",
     directory = __dirname,
     launchUrl = "http://" + host + ":" + port + publicPath,
     year = 60 * 60 * 24 * 365 * 1000;
-    
-// use compress middleware to gzip content
-app.use(compression());
+ 
+try {
 
-// set default mime type to xml for ".library" files
-express.static.mime.default_type = "text/xml";
+	// use compress middleware to gzip content
+	app.use(compression());
 
-// serve up content directory showing hidden (leading dot) files
-app.use(publicPath, express.static(directory, { maxAge: year, hidden: true }));
+	// set default mime type to xml for ".library" files
+	express.static.mime.default_type = "text/xml";
 
-// enable directory listing
-app.use("/", serveIndex(__dirname, {"icons": true}));
-app.use("/gui", function(req, res) {
-    for(var prop in req.headers) {
-        if(req.headers.hasOwnProperty(prop)) {
-            if(prop !== "authorization" && prop !== "cookie") {
-                delete req.headers[prop];
-            }
-        }
-    }
-    
-	http.request({
-		host: "grifonpc.ddns.net",
-		port: 9002,
-		path: "/gui" + req.url.toString(),
-		headers: {
-			"Authorization" : req.headers.authorization,
-			"Cookie" : req.headers.cookie
-		}
-	}, function(innerRes) {
-		innerRes.on('data', function (data) {
-			res.write(data);
-			res.end();
-		});
+	// serve up content directory showing hidden (leading dot) files
+	app.use(publicPath, express.static(directory, { maxAge: year, hidden: true }));
+
+	// enable directory listing
+	app.use("/", serveIndex(__dirname, {"icons": true}));
+	app.use("/gui", function(req, res) {
+
+		//var headers = {};
+		//if(req.headers.authorization) {
+		//	headers.Authorization = req.headers.authorization;
+		//}
+		//
+		//if(req.headers.cookie) {
+		//	headers.Cookie = req.headers.cookie;
+		//}
+		//
+		//var onResponse = function(innerRes) {
+		//	var strData = ""
+		//	
+		//	innerRes.on('data', function (data) {
+		//		strData += data;
+		//	});
+        //
+		//	//the whole response has been recieved, so we just print it out here
+		//	innerRes.on('end', function () {
+		//		res.write(strData);
+		//		res.end();
+		//	});
+		//}
+        //
+		//var innerReq = http.request({
+		//	host: "grifonpc.ddns.net",
+		//	port: "9002",
+		//	path: "/gui" + req.url.toString(),
+		//	headers: headers
+		//}, onResponse);
+		//
+		//innerReq.on("error", function() {
+		//	console.error(arguments);
+		//});
+		//
+		//innerReq.end();
+		
+		proxy.web(req, res, { target: "http://grifonpc.ddns.net:9002/gui" + req.url.toString() });
 	});
-	
-    //proxy.web(req, res, { target: "http://grifonpc.ddns.net:9002/gui" + req.url.toString() });
-});
 
-// start server
-app.listen(port, host);
+	// start server
+	app.listen(port, host);
 
-// launch uri in default browser
-//open(launchUrl);
+	// launch uri in default browser
+	//open(launchUrl);
 
-// log to server console
-console.log("OpenUI5 SDK server running at\n  => " + launchUrl + " \nCTRL + C to shutdown")
+	// log to server console
+	console.log("OpenUI5 SDK server running at\n  => " + launchUrl + " \nCTRL + C to shutdown");
+}
+catch (oException) {
+	console.error(oException);
+}

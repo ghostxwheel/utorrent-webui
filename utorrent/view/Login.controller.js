@@ -17,11 +17,14 @@ sap.ui.controller("view.Login", {
 	onButtonLogin: function() {
 		var strUsername = this.oModel.getProperty("/username");
 		var strPassword = this.oModel.getProperty("/password");
+		
+		window.authorization = "Basic " + btoa(strUsername + ":" + strPassword);
 
+		document.cookie = "GUID=;expires=Thu, 01 Jan 1970 00:00:01 GMT;";
 		jQuery.ajax({
 			url: "/gui/token.html",
 			headers: {
-				"Authorization": "Basic " + btoa(strUsername + ":" + strPassword)
+				"Authorization": window.authorization
 			},
 			success: function(strHtml) {
 				window.token = jQuery(strHtml).getEncodedText();
