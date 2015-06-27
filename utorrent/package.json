@@ -1,6 +1,14 @@
 {
+	"name": "uTorrent WebUI",
+	"description": "Alternative WebUI for uTorrent based on OpenUI5",
+	"author": "ghostxwheel <ghostxwheel@gmail.com>",
 	"scripts": {
 	  "start": "supervisor server.js"
 	},
-	"main": "server.js"
+	"main": "server.js",
+	"dependencies": {
+	  "compression": "latest",
+	  "express": "latest",
+	  "serve-index": "latest",
+	},
 }
