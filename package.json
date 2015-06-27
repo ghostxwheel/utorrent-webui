@@ -3,9 +3,9 @@
 	"description": "Alternative WebUI for uTorrent based on OpenUI5",
 	"author": "ghostxwheel <ghostxwheel@gmail.com>",
 	"scripts": {
-	  "start": "node server.js"
+	  "start": "node utorrent/server.js"
 	},
-	"main": "server.js",
+	"main": "utorrent/server.js",
 	"dependencies": {
 	  "compression": "latest",
 	  "express": "latest",
