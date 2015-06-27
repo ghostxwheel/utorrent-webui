@@ -18,6 +18,9 @@ sap.ui.controller("view.Login", {
 		var strUsername = this.oModel.getProperty("/username");
 		var strPassword = this.oModel.getProperty("/password");
 		
+		this.oModel.setProperty("/username","");
+		this.oModel.setProperty("/password","");
+		
 		window.authorization = "Basic " + btoa(strUsername + ":" + strPassword);
 
 		document.cookie = "GUID=;expires=Thu, 01 Jan 1970 00:00:01 GMT;";
