@@ -14,15 +14,15 @@
 	
 		<script>
 				sap.ui.localResources("view");
-				var app = new sap.m.App({initialPage:"idLogin"});
+				var app = new sap.m.App({initialPage:"idMain"});
 				
 				var page = sap.ui.view({id:"idMain", viewName:"view.Main", type:sap.ui.core.mvc.ViewType.XML});
 				app.addPage(page);
 				page.getController()._app = app;
 				
-				page = sap.ui.view({id:"idLogin", viewName:"view.Login", type:sap.ui.core.mvc.ViewType.XML});
-				app.addPage(page);
-				page.getController()._app = app;
+				// page = sap.ui.view({id:"idLogin", viewName:"view.Login", type:sap.ui.core.mvc.ViewType.XML});
+				// app.addPage(page);
+				// page.getController()._app = app;
 				
 				app.placeAt("content");
 		</script>

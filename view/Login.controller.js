@@ -6,29 +6,32 @@ sap.ui.controller("view.Login", {
 	 * @memberOf view.Login
 	 */
 	onInit: function() {
-		this.oModel = new sap.ui.model.json.JSONModel({
-			username: "admin",
-			password: ""
-		});
+// 		this.oModel = new sap.ui.model.json.JSONModel({
+// 			username: "admin",
+// 			password: ""
+// 		});
 
-		this.getView().setModel(this.oModel);
+// 		this.getView().setModel(this.oModel);
+		this.authorization();
 	},
 
 	onButtonLogin: function() {
-		var strUsername = this.oModel.getProperty("/username");
-		var strPassword = this.oModel.getProperty("/password");
+// 		var strUsername = this.oModel.getProperty("/username");
+// 		var strPassword = this.oModel.getProperty("/password");
 		
-		this.oModel.setProperty("/username","");
-		this.oModel.setProperty("/password","");
-		
-		window.authorization = "Basic " + btoa(strUsername + ":" + strPassword);
+// 		this.oModel.setProperty("/username","");
+// 		this.oModel.setProperty("/password","");
 
-		document.cookie = "GUID=;expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+		this.authorization();
+	},
+	
+	authorization: function(){
+	    document.cookie = "GUID=;expires=Thu, 01 Jan 1970 00:00:01 GMT;";
 		jQuery.ajax({
 			url: "/gui/token.html",
-			headers: {
-				"Authorization": window.authorization
-			},
+// 			headers: {
+// 				"Authorization": window.authorization
+// 			},
 			success: function(strHtml) {
 				window.token = jQuery(strHtml).getEncodedText();
 				
@@ -36,7 +39,10 @@ sap.ui.controller("view.Login", {
 				
                 var oEventBus = sap.ui.getCore().getEventBus();
                 oEventBus.publish("app", "load", {});
-			}.bind(this)
+			}.bind(this),
+	        error: function() {
+	            alert("Request denied");
+	        }
 		});
 	}
 

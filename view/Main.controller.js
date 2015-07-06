@@ -11,6 +11,8 @@ sap.ui.controller("view.Main", {
         
         this.oModel = new sap.ui.model.json.JSONModel();
         this.getView().setModel(this.oModel);
+        
+        this.authorization();
 	},
 	
 	onRefresh : function () {
@@ -25,12 +27,12 @@ sap.ui.controller("view.Main", {
 	    
 	    jQuery.ajax({
 	        url:"/gui/?token=" + window.token + "&action=remove&hash=" + strHash + "&t=" + Date.now() ,
-			headers: {
-				"Authorization": window.authorization
-			},
+// 			headers: {
+// 				"Authorization": window.authorization
+// 			},
 	        success: function() {
 	            this.onRefresh();
-	        }.bind(this) ,
+	        }.bind(this),
 	        error: function() {
 	            alert("Request denied");
 	        }
@@ -43,9 +45,9 @@ sap.ui.controller("view.Main", {
 	    
 	    jQuery.ajax({
 	        url:"/gui/?token=" + window.token + "&action=add-url&s=" + strUrl + "&t=" + Date.now() ,
-			headers: {
-				"Authorization": window.authorization
-			},
+// 			headers: {
+// 				"Authorization": window.authorization
+// 			},
 	        success: function() {
 	            this.onRefresh();
 	        }.bind(this),
@@ -58,9 +60,9 @@ sap.ui.controller("view.Main", {
 	onLoad: function() {
 	    jQuery.ajax({
 	        url:"/gui/?token=" + window.token + "&list=1",
-			headers: {
-				"Authorization": window.authorization
-			},
+// 			headers: {
+// 				"Authorization": window.authorization
+// 			},
 	        success: function(oData) {
 	            var oParsedData = JSON.parse(oData);
 	            oParsedData.downloading = [];
@@ -82,8 +84,32 @@ sap.ui.controller("view.Main", {
 	            
 	            this.oModel.setData(oParsedData);
 	            
-	        }.bind(this)
+	        }.bind(this),
+	        error: function() {
+	            alert("Request denied");
+	        }
 	    });
+	},
+	
+	authorization: function(){
+	    document.cookie = "GUID=;expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+		jQuery.ajax({
+			url: "/gui/token.html",
+// 			headers: {
+// 				"Authorization": window.authorization
+// 			},
+			success: function(strHtml) {
+				window.token = jQuery(strHtml).getEncodedText();
+				
+				//this._app.to("idMain");
+				
+                var oEventBus = sap.ui.getCore().getEventBus();
+                oEventBus.publish("app", "load", {});
+			}.bind(this),
+	        error: function() {
+	            alert("Request denied");
+	        }
+		});
 	}
 
 /**

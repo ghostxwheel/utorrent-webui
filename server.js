@@ -13,6 +13,8 @@ var app = express(),
 	host = process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1",
 	user = process.env.AUTH_USER || "admin",
 	pass = process.env.AUTH_PASS || "pass",
+	remoteUser = process.env.AUTH_REMOTE_USER || "admin",
+	remotePass = process.env.AUTH_REMOTE_PASS || "pass",
 	publicPath = "/",
 	directory = __dirname,
 	launchUrl = "http://" + host + ":" + port + publicPath,
@@ -37,15 +39,16 @@ app.use(publicPath, express.static(directory, {
 app.use("/", serveIndex(__dirname, {
 	"icons": true
 }));
-app.use("/gui", function(req, res) {
 
-	//var headers = {};
-	//if(req.headers.authorization) {
-	//	headers.Authorization = req.headers.authorization;
-	//}
-	
+proxy.on("proxyReq", function(proxyReq) {
+  proxyReq.setHeader("Authorization", "Basic " + btoa(remoteUser + ":" + remotePass));
+});
+
+app.use("/gui", function(req, res) {
+    var urlPath = req.url.toString();
+    
 	proxy.web(req, res, {
-		target: "http://grifonpc.ddns.net:9002/gui" + req.url.toString()
+		target: "http://grifonpc.ddns.net:9002/gui" + urlPath
 	});
 });
 
