@@ -41,7 +41,7 @@ app.use("/", serveIndex(__dirname, {
 }));
 
 proxy.on("proxyReq", function(proxyReq) {
-  proxyReq.setHeader("Authorization", "Basic " + btoa(remoteUser + ":" + remotePass));
+  proxyReq.setHeader("Authorization", "Basic " + new Buffer(remoteUser + ":" + remotePass).toString("base64"));
 });
 
 app.use("/gui", function(req, res) {
