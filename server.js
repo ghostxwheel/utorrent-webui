@@ -3,6 +3,7 @@ var express = require("express"),
 	http = require("http"),
 	compression = require("compression"),
 	httpProxy = require("http-proxy"),
+	basicAuth = require("basic-auth-connect"),
 	//open = require("open"),
 	serveIndex = require("serve-index");
 
@@ -18,7 +19,7 @@ var app = express(),
 	year = 60 * 60 * 24 * 365 * 1000;
 
 // Authentication middleware
-app.use(express.basicAuth(user, pass));
+app.use(basicAuth(user, pass));
 
 // use compress middleware to gzip content
 app.use(compression());
