@@ -13,7 +13,8 @@
 	  "express": "4.13.0",
 	  "serve-index": "1.7.0",
 	  "http-proxy": "1.11.1",
-	  "basic-auth-connect": "1.0.0"
+	  "basic-auth-connect": "1.0.0",
+	  "wake_on_lan": "0.0.4"
 	},
 	"eslintConfig": {
 	    "env": {

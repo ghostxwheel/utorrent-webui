@@ -1,10 +1,10 @@
 /*eslint-env node, browser */
 var express = require("express"),
-	http = require("http"),
 	compression = require("compression"),
 	httpProxy = require("http-proxy"),
 	basicAuth = require("basic-auth-connect"),
-	//open = require("open"),
+	net = require("net"),
+	wol = require("wake_on_lan"),
 	serveIndex = require("serve-index");
 
 var app = express(),
@@ -13,7 +13,9 @@ var app = express(),
 	host = process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1",
 	user = process.env.AUTH_USER || "admin",
 	pass = process.env.AUTH_PASS || "pass",
-	remoteUser = process.env.AUTH_REMOTE_USER || "admin",
+    macAddress = process.env.REMOTE_MAC || "20:DE:20:DE:20:DE",
+    remoteDns = process.env.REMOTE_ADDRESS || "localhost",
+    remoteUser = process.env.AUTH_REMOTE_USER || "admin",
 	remotePass = process.env.AUTH_REMOTE_PASS || "pass",
 	publicPath = "/",
 	directory = __dirname,
@@ -48,8 +50,47 @@ app.use("/gui", function(req, res) {
     var urlPath = req.url.toString();
     
 	proxy.web(req, res, {
-		target: "http://grifonpc.ddns.net:9002/gui" + urlPath
+		target: "http://" + remoteDns + ":9002/gui" + urlPath
 	});
+});
+
+app.use("/ping", function(req, res) {
+    var status = {};
+    var client = net.connect({
+        host: remoteDns,
+        port: 22
+    }, function() { //"connect" listener
+        status = { status: "Success", color: "Green" };
+        client.end();
+    });
+    
+    client.setTimeout(2000, function() {
+        status = { status: "Error", color: "Red" };
+        client.end();
+    });
+    
+    client.on("error", function() {
+        status = { status: "Error", color: "Red" };
+        client.end();
+    });
+    
+    client.on("close", function() {
+        res.json(status);
+        client.end();
+    });
+});
+
+app.use("/wakeup", function(req, res) {
+    wol.wake(macAddress, {
+        address: remoteDns,
+        port: 50000
+    }, function(error) {
+        if (error) {
+            res.json({ statusCode: 4, status: "Error sending packet" });
+        } else {
+            res.json({ statusCode: 0, status: "Wake-up packet sent" });
+        }
+    });
 });
 
 // start server
