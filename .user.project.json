@@ -1,7 +1,7 @@
 {
   "run": [
     {
-      "filePath": "/UTorrentDownloader/index.html",
+      "filePath": "/utorrent-webui/index.html",
       "previewMode": 0,
       "dataMode": 1,
       "workspace": "withoutWorkspace",

@@ -5,18 +5,23 @@ var express = require("express"),
 	basicAuth = require("basic-auth-connect"),
 	net = require("net"),
 	wol = require("wake_on_lan"),
+	dns = require("dns"),
+	ssh2Client = require("ssh2").Client,
 	serveIndex = require("serve-index");
 
 var app = express(),
+	ssh2client = new ssh2Client(),
 	proxy = httpProxy.createProxyServer({}),
 	port = process.env.OPENSHIFT_NODEJS_PORT || 8081,
 	host = process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1",
 	user = process.env.AUTH_USER || "admin",
 	pass = process.env.AUTH_PASS || "pass",
-    macAddress = process.env.REMOTE_MAC || "20:DE:20:DE:20:DE",
-    remoteDns = process.env.REMOTE_ADDRESS || "localhost",
-    remoteUser = process.env.AUTH_REMOTE_USER || "admin",
+	macAddress = process.env.REMOTE_MAC || "000000000000",
+	remoteDns = process.env.REMOTE_ADDRESS || "localhost",
+	remoteUser = process.env.AUTH_REMOTE_USER || "admin",
 	remotePass = process.env.AUTH_REMOTE_PASS || "pass",
+	remoteSshUser = process.env.REMOTE_SSH_USER || "admin",
+	remoteSshPassword = process.env.REMOTE_SSH_PASSWORD || "pass",
 	publicPath = "/",
 	directory = __dirname,
 	launchUrl = "http://" + host + ":" + port + publicPath,
@@ -43,54 +48,140 @@ app.use("/", serveIndex(__dirname, {
 }));
 
 proxy.on("proxyReq", function(proxyReq) {
-  proxyReq.setHeader("Authorization", "Basic " + new Buffer(remoteUser + ":" + remotePass).toString("base64"));
+	proxyReq.setHeader("Authorization", "Basic " + new Buffer(remoteUser + ":" + remotePass).toString("base64"));
 });
 
 app.use("/gui", function(req, res) {
-    var urlPath = req.url.toString();
-    
+	var urlPath = req.url.toString();
+
 	proxy.web(req, res, {
 		target: "http://" + remoteDns + ":9002/gui" + urlPath
 	});
 });
 
 app.use("/ping", function(req, res) {
-    var status = {};
-    var client = net.connect({
-        host: remoteDns,
-        port: 22
-    }, function() { //"connect" listener
-        status = { status: "Success", color: "Green" };
-        client.end();
-    });
-    
-    client.setTimeout(2000, function() {
-        status = { status: "Error", color: "Red" };
-        client.end();
-    });
-    
-    client.on("error", function() {
-        status = { status: "Error", color: "Red" };
-        client.end();
-    });
-    
-    client.on("close", function() {
-        res.json(status);
-        client.end();
-    });
+	var status = {};
+	var client = net.connect({
+		host: remoteDns,
+		port: 22
+	}, function() { //"connect" listener
+		status = {
+			status: "Success"
+		};
+		client.end();
+	});
+
+	client.setTimeout(2000, function() {
+		status = {
+			status: "Error"
+		};
+		client.end();
+	});
+
+	client.on("error", function() {
+		status = {
+			status: "Error"
+		};
+		client.end();
+	});
+
+	client.on("close", function() {
+		res.json(status);
+		client.end();
+	});
 });
 
 app.use("/wakeup", function(req, res) {
-    wol.wake(macAddress, {
-        address: remoteDns,
-        port: 50000
-    }, function(error) {
-        if (error) {
-            res.json({ statusCode: 4, status: "Error sending packet" });
-        } else {
-            res.json({ statusCode: 0, status: "Wake-up packet sent" });
-        }
-    });
+	dns.resolve(remoteDns, function(error, addresses) {
+		if (error) {
+			res.json({
+				statusCode: 4,
+				status: "Error occurred while resolving address"
+			});
+		} else if (addresses.length > 0) {
+			wol.wake(macAddress, {
+				address: addresses[0],
+				port: 50000
+			}, function(error) {
+				console.log(macAddress);
+				console.log(addresses[0]);
+
+				if (error) {
+					console.log(error.toString());
+					res.json({
+						statusCode: 4,
+						status: "Error occured: " + error.toString()
+					});
+				} else {
+					res.json({
+						statusCode: 0,
+						status: "Wake-up packet sent"
+					});
+				}
+			});
+		}
+	});
+});
+
+app.use("/shutdown", function(req, res) {
+	dns.resolve(remoteDns, function(error, addresses) {
+		if (error) {
+			res.json({
+				statusCode: 4,
+				status: "Error occurred while resolving address"
+			});
+		} else if (addresses.length > 0) {
+		    var status = {
+				statusCode: 0,
+				status: "Shutdown sent to remote server"
+			};
+		    
+			ssh2client
+				.on("ready", function() {
+					console.log("Client :: ready");
+					ssh2client.exec("shutdown /s /t 0", function(err, stream) {
+						if (err) {
+						    status = {
+        						statusCode: 4,
+        						status: "Error occured: "
+        					};
+        					
+        					return;
+						}
+						
+						stream.on("close", function(code, signal) {
+							console.log("Stream :: close :: code: " + code + ", signal: " + signal);
+							ssh2client.end();
+						}).on("data", function(data) {
+							console.log("STDOUT: " + data);
+						}).stderr.on("data", function(data) {
+							console.log("STDERR: " + data);
+						});
+					});
+				})
+				
+				.on("error", function(error) {
+				    // Nothing
+				    console.log(error);
+				    
+				    status = {
+						statusCode: 4,
+						status: "Error occured: "
+					};
+				})
+				
+				.on("close", function(hasError) {
+        			res.json(status);
+				})
+
+			.connect({
+				host: addresses[0],
+				port: 22,
+				username: remoteSshUser,
+				password: remoteSshPassword
+			});
+		}
+	});
 });
 
 // start server

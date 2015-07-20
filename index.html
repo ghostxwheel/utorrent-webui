@@ -9,8 +9,24 @@
 				id="sap-ui-bootstrap"
 				data-sap-ui-libs="sap.m"
 				data-sap-ui-resourceroots='{"view": "./"}'
-				data-sap-ui-theme="sap_bluecrystal">
+				data-sap-ui-theme="sap_bluecrystal"
+			    data-sap-ui-xx-bindingSyntax="complex">
 		</script>
+		
+		<style>
+		    .statusIconYellow .sapMBtnDefault .sapMBtnIcon {
+		        color:yellow
+		    }
+		    
+		    .statusIconGreen .sapMBtnDefault .sapMBtnIcon {
+		        color:green
+		    }
+		    
+		    .statusIconRed .sapMBtnDefault .sapMBtnIcon {
+		        color:red
+		    }
+		    
+		</style>
 	
 		<script>
 				sap.ui.localResources("view");

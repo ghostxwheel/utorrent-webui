@@ -3,47 +3,102 @@
     xmlns:sap.ui.core="sap.ui.core"
     xmlns:sap.ui.core.mvc="sap.ui.core.mvc" >
     <Page>
+        <content>
+            <IconTabBar selectedKey="Torrents">
+                <items>
+                    <IconTabFilter text="Add" key="Add" icon="sap-icon://chain-link">
+                        <content>
+                            <Panel headerText="Add torrent magnet">
+                                <customData>
+                                    <sap.ui.core:CustomData key="sap-ui-fastnavgroup" value="true" writeToDom="true"></sap.ui.core:CustomData>
+                                    <sap.ui.core:CustomData key="sap-ui-fastnavgroup" value="true" writeToDom="true"></sap.ui.core:CustomData>
+                                    <sap.ui.core:CustomData key="sap-ui-fastnavgroup" value="true" writeToDom="true"></sap.ui.core:CustomData>
+                                </customData>
+                                <content>
+                                    <Input id="torrentUrl" width="100%"></Input>
+                                    <Button text="Add" width="100px"></Button>
+                                </content>
+                            </Panel>
+                        </content>
+                    </IconTabFilter>
+                    <IconTabFilter text="Torrents" key="Torrents" icon="sap-icon://task">
+                        <content>
+                            <List headerText="Downloading" noDataText="No data" items="{/downloading}">
+                                <customData>
+                                    <sap.ui.core:CustomData key="sap-ui-fastnavgroup" value="true" writeToDom="true"></sap.ui.core:CustomData>
+                                    <sap.ui.core:CustomData key="sap-ui-fastnavgroup" value="true" writeToDom="true"></sap.ui.core:CustomData>
+                                    <sap.ui.core:CustomData key="sap-ui-fastnavgroup" value="true" writeToDom="true"></sap.ui.core:CustomData>
+                                    <sap.ui.core:CustomData key="sap-ui-fastnavgroup" value="true" writeToDom="true"></sap.ui.core:CustomData>
+                                    <sap.ui.core:CustomData key="sap-ui-fastnavgroup" value="true" writeToDom="true"></sap.ui.core:CustomData>
+                                    <sap.ui.core:CustomData key="sap-ui-fastnavgroup" value="true" writeToDom="true"></sap.ui.core:CustomData>
+                                    <sap.ui.core:CustomData key="sap-ui-fastnavgroup" value="true" writeToDom="true"></sap.ui.core:CustomData>
+                                </customData>
+                                <items>
+                                    <StandardListItem type="Active" counter="0" title="{2}" description="{21}"></StandardListItem>
+                                </items>
+                                <swipeContent>
+                                    <Button text="Remove torrent" type="Reject"></Button>
+                                </swipeContent>
+                            </List>
+                            <List headerText="Downloaded" noDataText="No data" items="{/torrents}">
+                                <customData>
+                                    <sap.ui.core:CustomData key="sap-ui-fastnavgroup" value="true" writeToDom="true"></sap.ui.core:CustomData>
+                                    <sap.ui.core:CustomData key="sap-ui-fastnavgroup" value="true" writeToDom="true"></sap.ui.core:CustomData>
+                                    <sap.ui.core:CustomData key="sap-ui-fastnavgroup" value="true" writeToDom="true"></sap.ui.core:CustomData>
+                                    <sap.ui.core:CustomData key="sap-ui-fastnavgroup" value="true" writeToDom="true"></sap.ui.core:CustomData>
+                                    <sap.ui.core:CustomData key="sap-ui-fastnavgroup" value="true" writeToDom="true"></sap.ui.core:CustomData>
+                                    <sap.ui.core:CustomData key="sap-ui-fastnavgroup" value="true" writeToDom="true"></sap.ui.core:CustomData>
+                                </customData>
+                                <items>
+                                    <StandardListItem type="Active" counter="0" title="{2}" description="{21}"></StandardListItem>
+                                </items>
+                                <swipeContent>
+                                    <Button text="Remove torrent" type="Reject"></Button>
+                                </swipeContent>
+                            </List>
+                        </content>
+                    </IconTabFilter>
+                    <IconTabFilter text="Utilities" key="Utilities" icon="sap-icon://shipping-status">
+                        <content>
+                            <Panel headerText="Remote machine actions">
+                                <customData>
+                                    <sap.ui.core:CustomData key="sap-ui-fastnavgroup" value="true" writeToDom="true"></sap.ui.core:CustomData>
+                                    <sap.ui.core:CustomData key="sap-ui-fastnavgroup" value="true" writeToDom="true"></sap.ui.core:CustomData>
+                                    <sap.ui.core:CustomData key="sap-ui-fastnavgroup" value="true" writeToDom="true"></sap.ui.core:CustomData>
+                                </customData>
+                                <content>
+                                    <SegmentedButton id="segButton" selectedButton="shutdown">
+                                        <buttons>
+                                            <Button id="shutdown" text="Shutdown" press="handleShutdown"></Button>
+                                            <Button id="wakeup" text="Wake up" press="handleWakeUp"></Button>
+                                        </buttons>
+                                    </SegmentedButton>
+                                </content>
+                            </Panel>
+                        </content>
+                    </IconTabFilter>
+                </items>
+            </IconTabBar>
+        </content>
         <customHeader>
             <Bar>
-        		<contentLeft></contentLeft> <!-- sap.ui.core.Control -->
-        		<contentMiddle><Label text="uTorrent Downloader" /></contentMiddle> <!-- sap.ui.core.Control -->
-        		<contentRight><Button icon="sap-icon://synchronize" press="onRefresh" /></contentRight> <!-- sap.ui.core.Control -->
+                <customData>
+                    <sap.ui.core:CustomData key="sap-ui-fastnavgroup" value="true" writeToDom="true"></sap.ui.core:CustomData>
+                    <sap.ui.core:CustomData key="sap-ui-fastnavgroup" value="true" writeToDom="true"></sap.ui.core:CustomData>
+                    <sap.ui.core:CustomData key="sap-ui-fastnavgroup" value="true" writeToDom="true"></sap.ui.core:CustomData>
+                    <sap.ui.core:CustomData key="sap-ui-fastnavgroup" value="true" writeToDom="true"></sap.ui.core:CustomData>
+                    <sap.ui.core:CustomData key="sap-ui-fastnavgroup" value="true" writeToDom="true"></sap.ui.core:CustomData>
+                </customData>
+                <contentLeft>
+                    <Button id="buttonIcon" class="statusIconYellow" type="{path: 'status>/status/color', formatter:'.formatterIconButton' }" icon="{status>/status/icon}"></Button>
+                </contentLeft>
+                <contentMiddle>
+                    <Label text="uTorrent Downloader"></Label>
+                </contentMiddle>
+                <contentRight>
+                    <Button icon="sap-icon://synchronize"></Button>
+                </contentRight>
             </Bar>
         </customHeader>
-        <content>
-            <Label text="Add url magnet link" width="100%"></Label>
-            <Input width="100%" id="torrentUrl"></Input>
-            <Button text="Add" width="100px" press="onAddUrl"></Button>
-            <List headerText="Downloading" noDataText="No data" items="{/downloading}">
-                <customData>
-                    <sap.ui.core:CustomData key="sap-ui-fastnavgroup" value="true" writeToDom="true"></sap.ui.core:CustomData>
-                    <sap.ui.core:CustomData key="sap-ui-fastnavgroup" value="true" writeToDom="true"></sap.ui.core:CustomData>
-                </customData>
-                <items>
-                    <StandardListItem type="Navigation" counter="0" title="{2}" description="{21}"></StandardListItem>
-                </items>
-                <swipeContent>
-                  <Button
-                    text="Remove torrent"
-                    type="Reject"
-                    press="onTorrentRemove" />
-                </swipeContent>
-            </List>
-            <List headerText="Downloaded" noDataText="No data" items="{/torrents}">
-                <customData>
-                    <sap.ui.core:CustomData key="sap-ui-fastnavgroup" value="true" writeToDom="true"></sap.ui.core:CustomData>
-                </customData>
-                <items>
-                    <StandardListItem type="Navigation" counter="0" title="{2}" description="{21}">
-                    </StandardListItem>
-                </items>
-                <swipeContent>
-                  <Button
-                    text="Remove torrent"
-                    type="Reject"
-                    press="onTorrentRemove" />
-                </swipeContent>
-            </List>
-        </content>
     </Page>
 </sap.ui.core.mvc:View>
