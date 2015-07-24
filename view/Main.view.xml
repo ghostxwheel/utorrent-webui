@@ -16,7 +16,7 @@
                                 </customData>
                                 <content>
                                     <Input id="torrentUrl" width="100%"></Input>
-                                    <Button text="Add" width="100px"></Button>
+                                    <Button text="Add" width="100px" press="onAddUrl" ></Button>
                                 </content>
                             </Panel>
                         </content>
