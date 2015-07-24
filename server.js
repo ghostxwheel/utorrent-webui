@@ -27,6 +27,8 @@ var app = express(),
 	directory = __dirname,
 	launchUrl = "http://" + host + ":" + port + publicPath,
 	year = 60 * 60 * 24 * 365 * 1000;
+	
+console.log(process.env);
 
 // Authentication middleware
 app.use(basicAuth(user, pass));
