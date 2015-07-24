@@ -1,6 +1,6 @@
 CACHE MANIFEST
  
-# Version 1.08
+# Version 1.09
 
 NETWORK:
 *
@@ -88,29 +88,29 @@ CACHE:
 /resources/sap/m/SegmentedButtonRenderer.js
 /browserconfig.xml
 /manifest.json
-/css/android-chrome-144x144.png
-/css/android-chrome-192x192.png
-/css/android-chrome-36x36.png
-/css/android-chrome-48x48.png
-/css/android-chrome-72x72.png
-/css/android-chrome-96x96.png
-/css/apple-touch-icon-114x114.png
-/css/apple-touch-icon-120x120.png
-/css/apple-touch-icon-144x144.png
-/css/apple-touch-icon-152x152.png
-/css/apple-touch-icon-180x180.png
-/css/apple-touch-icon-57x57.png
-/css/apple-touch-icon-60x60.png
-/css/apple-touch-icon-72x72.png
-/css/apple-touch-icon-76x76.png
-/css/apple-touch-icon-precomposed.png
-/css/apple-touch-icon.png
-/css/favicon-16x16.png
-/css/favicon-32x32.png
-/css/favicon-96x96.png
-/css/favicon.ico
-/css/mstile-144x144.png
-/css/mstile-150x150.png
-/css/mstile-310x150.png
-/css/mstile-310x310.png
-/css/mstile-70x70.png
+/android-chrome-144x144.png
+/android-chrome-192x192.png
+/android-chrome-36x36.png
+/android-chrome-48x48.png
+/android-chrome-72x72.png
+/android-chrome-96x96.png
+/apple-touch-icon-114x114.png
+/apple-touch-icon-120x120.png
+/apple-touch-icon-144x144.png
+/apple-touch-icon-152x152.png
+/apple-touch-icon-180x180.png
+/apple-touch-icon-57x57.png
+/apple-touch-icon-60x60.png
+/apple-touch-icon-72x72.png
+/apple-touch-icon-76x76.png
+/apple-touch-icon-precomposed.png
+/apple-touch-icon.png
+/favicon-16x16.png
+/favicon-32x32.png
+/favicon-96x96.png
+/favicon.ico
+/mstile-144x144.png
+/mstile-150x150.png
+/mstile-310x150.png
+/mstile-310x310.png
+/mstile-70x70.pn
