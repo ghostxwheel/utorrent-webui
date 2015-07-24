@@ -242,11 +242,13 @@ sap.ui.controller("view.Main", {
 					case 0:
 					    
 				        oSegmentedButton.setSelectedButton(this.getView().byId("wakeup"));
+				        this.changeRemoteMachineStatus("good");
 					    break;
 					default:
 				}
 				
 				oSegmentedButton.setBusy(false);
+				
 			}.bind(this) ,
 			error: function() {
 				alert("Request denied");
