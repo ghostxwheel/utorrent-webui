@@ -36,6 +36,8 @@ sap.ui.controller("view.Main", {
 	 * @memberOf view.Main
 	 */
 	onInit: function() {
+	    jQuery.ajaxSetup({cache: true});
+	    
 		var oEventBus = sap.ui.getCore().getEventBus();
 		oEventBus.subscribe("app", "load", this.onLoad, this);
 
