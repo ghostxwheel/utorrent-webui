@@ -13,7 +13,7 @@ var app = express(),
 	ssh2client = new ssh2Client(),
 	proxy = httpProxy.createProxyServer({}),
 	port = process.env.OPENSHIFT_NODEJS_PORT || process.env.PORT || 8081,
-	host = process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1",
+	//host = process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1",
 	user = process.env.AUTH_USER || "admin",
 	pass = process.env.AUTH_PASS || "pass",
 	macAddress = process.env.REMOTE_MAC || "000000000000",
@@ -185,7 +185,7 @@ app.use("/shutdown", function(req, res) {
 });
 
 // start server
-app.listen(port, host);
+app.listen(port);
 
 // log to server console
 console.log("OpenUI5 SDK server running at\n  => " + launchUrl + " \nCTRL + C to shutdown");
