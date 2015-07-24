@@ -92,6 +92,7 @@ sap.ui.controller("view.Main", {
 	},
 
 	onLoad: function() {
+	    this.queryRemoteServerStatus();
 		this.queryTorrentList();
 	},
 
