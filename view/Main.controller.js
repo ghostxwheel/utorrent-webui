@@ -95,7 +95,7 @@ sap.ui.controller("view.Main", {
 		this.queryTorrentList();
 	},
 
-	authorization: function() {
+	authorization: function(callback) {
 		document.cookie = "GUID=;expires=Thu, 01 Jan 1970 00:00:01 GMT;";
 		jQuery.ajax({
 			url: "/gui/token.html",
@@ -109,14 +109,34 @@ sap.ui.controller("view.Main", {
 
 				var oEventBus = sap.ui.getCore().getEventBus();
 				oEventBus.publish("app", "load", {});
+
+				setTimeout(function() {
+					callback(true);
+				}.bind(this));
 			}.bind(this),
 			error: function() {
 				alert("Request denied");
+
+				setTimeout(function() {
+					callback(false);
+				}.bind(this));
 			}
 		});
 	},
 
 	queryTorrentList: function() {
+		if (!window.token) {
+			this.authorization(function(error) {
+				if (!error) {
+					setTimeout(function() {
+						this.queryTorrentList();
+					}.bind(this));
+				}
+			}.bind(this));
+
+			return;
+		}
+
 		jQuery.ajax({
 			url: "/gui/?token=" + window.token + "&list=1",
 			//headers: {
@@ -186,7 +206,7 @@ sap.ui.controller("view.Main", {
 		var strIcon = "status-critical";
 		var strColor = "yellow";
 
-		var oSegmentedButton = this.getView().byId("segButton");  
+		var oSegmentedButton = this.getView().byId("segButton");
 
 		if (oSegmentedButton.getBusy()) {
 			return;
@@ -225,10 +245,10 @@ sap.ui.controller("view.Main", {
 	},
 
 	handleWakeUp: function(oEvent) {
-	    var oSegmentedButton = oEvent.getSource().getParent();
-	    
-	    oSegmentedButton.setBusy(true);
-	    
+		var oSegmentedButton = oEvent.getSource().getParent();
+
+		oSegmentedButton.setBusy(true);
+
 		jQuery.ajax({
 			url: "/wakeup",
 			success: function(strJson) {
@@ -240,29 +260,29 @@ sap.ui.controller("view.Main", {
 
 						break;
 					case 0:
-					    
-				        oSegmentedButton.setSelectedButton(this.getView().byId("wakeup"));
-				        this.changeRemoteMachineStatus("good");
-					    break;
+
+						oSegmentedButton.setSelectedButton(this.getView().byId("wakeup"));
+						this.changeRemoteMachineStatus("good");
+						break;
 					default:
 				}
-				
+
 				oSegmentedButton.setBusy(false);
-				
-			}.bind(this) ,
+
+			}.bind(this),
 			error: function() {
 				alert("Request denied");
-				
+
 				oSegmentedButton.setBusy(false);
 			}
 		});
 	},
-	
+
 	handleShutdown: function(oEvent) {
-	    var oSegmentedButton = oEvent.getSource().getParent();
-	    
-	    oSegmentedButton.setBusy(true);
-	    
+		var oSegmentedButton = oEvent.getSource().getParent();
+
+		oSegmentedButton.setBusy(true);
+
 		jQuery.ajax({
 			url: "/shutdown",
 			success: function(strJson) {
@@ -274,19 +294,19 @@ sap.ui.controller("view.Main", {
 
 						break;
 					case 0:
-					    
-				        oSegmentedButton.setSelectedButton(this.getView().byId("shutdown"));
-				        
-				        this.changeRemoteMachineStatus("bad");
-					    break;
+
+						oSegmentedButton.setSelectedButton(this.getView().byId("shutdown"));
+
+						this.changeRemoteMachineStatus("bad");
+						break;
 					default:
 				}
-				
+
 				oSegmentedButton.setBusy(false);
-			}.bind(this) ,
+			}.bind(this),
 			error: function() {
 				alert("Request denied");
-				
+
 				oSegmentedButton.setBusy(false);
 			}
 		});
