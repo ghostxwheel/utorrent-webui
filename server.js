@@ -14,7 +14,7 @@ var app = express(),
 	proxy = httpProxy.createProxyServer({}),
 	port = process.env.OPENSHIFT_NODEJS_PORT || process.env.PORT || 8081,
 	//host = process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1",
-	host = 'herokuhost',
+	host = "herokuhost",
 	user = process.env.AUTH_USER || "admin",
 	pass = process.env.AUTH_PASS || "pass",
 	macAddress = process.env.REMOTE_MAC || "000000000000",
@@ -28,7 +28,14 @@ var app = express(),
 	launchUrl = "http://" + host + ":" + port + publicPath,
 	year = 60 * 60 * 24 * 365 * 1000;
 	
-console.log(process.env);
+console.log(process.env.AUTH_USER);
+console.log(process.env.AUTH_PASS);
+console.log(process.env.REMOTE_MAC);
+console.log(process.env.REMOTE_ADDRESS);
+console.log(process.env.AUTH_REMOTE_USER);
+console.log(process.env.AUTH_REMOTE_PASS);
+console.log(process.env.REMOTE_SSH_USER);
+console.log(process.env.REMOTE_SSH_PASSWORD);
 
 // Authentication middleware
 app.use(basicAuth(user, pass));
