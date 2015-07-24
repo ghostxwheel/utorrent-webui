@@ -1,6 +1,6 @@
 CACHE MANIFEST
  
-# Version 1.04
+# Version 1.05
 
 NETWORK:
 *
@@ -8,6 +8,8 @@ NETWORK:
 CACHE:
 /resources/sap-ui-core.js
 /resources/sap/ui/thirdparty/jquery-mobile-custom.js
+/resources/sap/ui/core/library-preload.json
+/resources/sap/m/library-preload.json
 /resources/sap/ui/core/library.js
 /resources/sap/ui/core/themes/sap_bluecrystal/library.css
 /resources/sap/m/library.js
@@ -26,25 +28,27 @@ CACHE:
 /resources/sap/ui/core/Renderer.js
 /resources/sap/ui/core/mvc/Controller.js
 /resources/sap/m/Page.js
-/resources/sap/m/Bar.js
-/resources/sap/m/BarInPageEnabler.js
-/resources/sap/m/Label.js
-/resources/sap/m/Button.js
-/resources/sap/ui/core/EnabledPropagator.js
+/resources/sap/m/IconTabBar.js
+/resources/sap/m/IconTabFilter.js
+/resources/sap/ui/core/Item.js
+/resources/sap/m/Panel.js
 /resources/sap/ui/core/IconPool.js
-/resources/sap/ui/core/theming/Parameters.js
 /resources/sap/ui/core/CustomData.js
 /resources/sap/m/Input.js
+/resources/sap/m/Bar.js
+/resources/sap/m/BarInPageEnabler.js
 /resources/sap/m/Dialog.js
 /resources/sap/m/InstanceManager.js
 /resources/sap/m/Toolbar.js
 /resources/sap/m/ToolbarLayoutData.js
 /resources/sap/ui/core/LayoutData.js
 /resources/sap/m/ToolbarSpacer.js
+/resources/sap/ui/core/EnabledPropagator.js
 /resources/sap/ui/core/Popup.js
 /resources/sap/ui/core/IntervalTrigger.js
 /resources/sap/ui/core/EventBus.js
 /resources/sap/ui/core/delegate/ScrollEnablement.js
+/resources/sap/ui/core/theming/Parameters.js
 /resources/sap/m/InputBase.js
 /resources/sap/m/List.js
 /resources/sap/m/ListBase.js
@@ -52,31 +56,36 @@ CACHE:
 /resources/sap/m/ListItemBase.js
 /resources/sap/ui/core/delegate/ItemNavigation.js
 /resources/sap/m/Popover.js
+/resources/sap/m/Button.js
 /resources/sap/m/StandardListItem.js
 /resources/sap/m/Table.js
+/resources/sap/m/messagebundle_en_US.properties
 /resources/sap/m/messagebundle_en.properties
 /resources/sap/ui/core/InvisibleText.js
+/resources/sap/m/SegmentedButton.js
+/resources/sap/m/IconTabHeader.js
+/resources/sap/m/Label.js
 /resources/sap/ui/model/json/JSONModel.js
 /resources/sap/ui/model/json/JSONListBinding.js
 /resources/sap/ui/model/json/JSONPropertyBinding.js
 /resources/sap/ui/model/json/JSONTreeBinding.js
-/resources/sap/m/Title.js
 /resources/sap/m/AppRenderer.js
 /resources/sap/m/NavContainerRenderer.js
 /resources/sap/ui/core/mvc/XMLViewRenderer.js
 /resources/sap/ui/core/mvc/ViewRenderer.js
 /resources/sap/m/PageRenderer.js
 /resources/sap/m/BarRenderer.js
-/resources/sap/m/TitleRenderer.js
-/resources/sap/m/LabelRenderer.js
-/resources/sap/m/InputRenderer.js
-/resources/sap/m/InputBaseRenderer.js
-/resources/sap/ui/core/ValueStateSupport.js
 /resources/sap/m/ButtonRenderer.js
 /resources/sap/ui/core/Icon.js
 /resources/sap/ui/core/IconRenderer.js
+/resources/sap/m/LabelRenderer.js
+/resources/sap/m/IconTabBarRenderer.js
+/resources/sap/m/IconTabHeaderRenderer.js
 /resources/sap/m/ListRenderer.js
 /resources/sap/m/ListBaseRenderer.js
 /resources/sap/ui/core/themes/base/fonts/SAP-icons.ttf
-/resources/sap/m/StandardListItemRenderer.js
-/resources/sap/m/ListItemBaseRenderer.js
+/resources/sap/m/PanelRenderer.js
+/resources/sap/m/InputRenderer.js
+/resources/sap/m/InputBaseRenderer.js
+/resources/sap/ui/core/ValueStateSupport.js
+/resources/sap/m/SegmentedButtonRenderer.js
