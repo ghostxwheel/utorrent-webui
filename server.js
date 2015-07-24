@@ -173,14 +173,9 @@ app.use("/shutdown", function(req, res) {
 				.on("error", function(error) {
 				    // Nothing
 				    console.log(error);
-				    
-				    status = {
-						statusCode: 4,
-						status: "Error occured: "
-					};
 				})
 				
-				.on("close", function(hasError) {
+				.on("close", function() {
         			res.json(status);
 				})
 
