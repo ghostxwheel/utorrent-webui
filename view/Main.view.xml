@@ -96,7 +96,7 @@
                     <Label text="uTorrent Downloader"></Label>
                 </contentMiddle>
                 <contentRight>
-                    <Button icon="sap-icon://synchronize" press=""></Button>
+                    <Button icon="sap-icon://synchronize" press="onRefresh"></Button>
                 </contentRight>
             </Bar>
         </customHeader>
