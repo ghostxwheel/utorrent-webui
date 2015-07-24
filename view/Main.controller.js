@@ -92,8 +92,9 @@ sap.ui.controller("view.Main", {
 	},
 
 	onLoad: function() {
-	    this.queryRemoteServerStatus();
-		this.queryTorrentList();
+		this.queryRemoteServerStatus(function() {
+		    this.queryTorrentList();
+		}.bind(this));
 	},
 
 	authorization: function(callback) {
@@ -112,14 +113,18 @@ sap.ui.controller("view.Main", {
 				oEventBus.publish("app", "load", {});
 
 				setTimeout(function() {
-					callback(true);
+					if (callback) {
+						callback(true);
+					}
 				}.bind(this));
 			}.bind(this),
 			error: function() {
 				alert("Request denied");
 
 				setTimeout(function() {
-					callback(false);
+					if (callback) {
+						callback(false);
+					}
 				}.bind(this));
 			}
 		});
@@ -171,7 +176,7 @@ sap.ui.controller("view.Main", {
 		});
 	},
 
-	queryRemoteServerStatus: function() {
+	queryRemoteServerStatus: function(callback) {
 		jQuery.ajax({
 			url: "/ping",
 			success: function(strData) {
@@ -190,7 +195,16 @@ sap.ui.controller("view.Main", {
 						this.changeRemoteMachineStatus("good");
 
 						setTimeout(function() {
-							this.authorization();
+
+							if (!window.token) {
+								this.authorization();
+							}
+						}.bind(this));
+
+						setTimeout(function() {
+							if (callback) {
+								callback();
+							}
 						}.bind(this));
 
 						break;
