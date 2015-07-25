@@ -80,6 +80,11 @@ cache.push({ file: path.join(__dirname, '/resources/sap/m/ListBaseRenderer.js'),
 cache.push({ file: path.join(__dirname, '/resources/sap/ui/core/themes/base/fonts/SAP-icons.ttf'), path: '/resources/sap/ui/core/themes/base/fonts/SAP-icons.ttf' });
 cache.push({ file: path.join(__dirname, '/resources/sap/m/StandardListItemRenderer.js'), path: '/resources/sap/m/StandardListItemRenderer.js' });
 cache.push({ file: path.join(__dirname, '/resources/sap/m/ListItemBaseRenderer.js'), path: '/resources/sap/m/ListItemBaseRenderer.js' });
+cache.push({ file: path.join(__dirname, '/resources/sap/m/PanelRenderer.js'), path: '/resources/sap/m/PanelRenderer.js' });
+cache.push({ file: path.join(__dirname, '/resources/sap/m/SegmentedButtonRenderer.js'), path: '/resources/sap/m/SegmentedButtonRenderer.js' });
+cache.push({ file: path.join(__dirname, '/resources/sap/m/InputRenderer.js'), path: '/resources/sap/m/InputRenderer.js' });
+cache.push({ file: path.join(__dirname, '/resources/sap/m/InputBaseRenderer.js'), path: '/resources/sap/m/InputBaseRenderer.js' });
+cache.push({ file: path.join(__dirname, '/resources/sap/ui/core/ValueStateSupport.js'), path: '/resources/sap/ui/core/ValueStateSupport.js' });
 
 // Public
 cache.push({ dir: path.join(__dirname, '/public/'), prefix: '/public/' });
