@@ -4,7 +4,7 @@
     xmlns:sap.ui.core.mvc="sap.ui.core.mvc" >
     <Page>
         <content>
-            <IconTabBar selectedKey="Torrents">
+            <IconTabBar selectedKey="Torrents" expandable="false" >
                 <items>
                     <IconTabFilter text="Add" key="Add" icon="sap-icon://chain-link">
                         <content>
