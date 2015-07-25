@@ -7,8 +7,9 @@ var express = require('express'),
 	wol = require('wake_on_lan'),
 	dns = require('dns'),
 	ssh2Client = require('ssh2').Client,
-	path = require('path'),
+	//path = require('path'),
 	cacheManifest = require('connect-cache-manifest'),
+	cacheConfig = require('./cache'),
 	serveIndex = require('serve-index');
 
 var app = express(),
@@ -32,13 +33,7 @@ var app = express(),
 // Cache manifest
 app.use(cacheManifest({
 	manifestPath: '/public/cache.manifest',
-	files: [{
-		dir: path.join(__dirname, '/public/'),
-		prefix: '/public/'
-    }, {
-		dir: path.join(__dirname, '/resources'),
-		prefix: '/resources/'
-    }],
+	files: cacheConfig.cache,
 	networks: ['*'],
 	fallbacks: []
 }));
