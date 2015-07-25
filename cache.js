@@ -1,6 +1,6 @@
 var path = require('path');
 var cache = [];
-var config = { cache: cache };
+var conf = { cache: cache };
 
 // Resources
 cache.push({ file: path.join(__dirname, '/resources/sap-ui-core.js'), path: '/resources/sap-ui-core.js' });
@@ -89,4 +89,4 @@ cache.push({ file: path.join(__dirname, '/resources/sap/ui/core/ValueStateSuppor
 // Public
 cache.push({ dir: path.join(__dirname, '/public/'), prefix: '/public/' });
 
-module.exports = config;
+module.exports = conf;

@@ -18,14 +18,14 @@ var app = express(),
 	port = process.env.OPENSHIFT_NODEJS_PORT || process.env.PORT || 8081,
 	//host = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1',
 	host = 'herokuhost',
-	user = process.env.AUTH_USER || 'admin',
-	pass = process.env.AUTH_PASS || 'pass',
-	macAddress = process.env.REMOTE_MAC || '000000000000',
-	remoteDns = process.env.REMOTE_ADDRESS || 'localhost',
-	remoteUser = process.env.AUTH_REMOTE_USER || 'admin',
-	remotePass = process.env.AUTH_REMOTE_PASS || 'pass',
-	remoteSshUser = process.env.REMOTE_SSH_USER || 'admin',
-	remoteSshPassword = process.env.REMOTE_SSH_PASSWORD || 'pass',
+// 	user = process.env.AUTH_USER || 'admin',
+// 	pass = process.env.AUTH_PASS || 'pass',
+// 	macAddress = process.env.REMOTE_MAC || '000000000000',
+// 	remoteDns = process.env.REMOTE_ADDRESS || 'localhost',
+// 	remoteUser = process.env.AUTH_REMOTE_USER || 'admin',
+// 	remotePass = process.env.AUTH_REMOTE_PASS || 'pass',
+// 	remoteSshUser = process.env.REMOTE_SSH_USER || 'admin',
+// 	remoteSshPassword = process.env.REMOTE_SSH_PASSWORD || 'pass',
 	publicPath = '/',
 	launchUrl = 'http://' + host + ':' + port + publicPath,
 	year = 60 * 60 * 24 * 365 * 1000;
@@ -38,16 +38,16 @@ app.use(cacheManifest({
 	fallbacks: []
 }));
 
-var auth = function(req, res, next) {
-	if (req.url.indexOf('/public/') !== 0 && req.url.indexOf('/resources/') !== 0) {
-		basicAuth(user, pass)(req, res, next);
-	} else {
-	    next();
-	}
-};
+// var auth = function(req, res, next) {
+// 	if (req.url.indexOf('/public/') !== 0 && req.url.indexOf('/resources/') !== 0) {
+// 		basicAuth(user, pass)(req, res, next);
+// 	} else {
+// 	    next();
+// 	}
+// };
 
-// use compress middleware to gzip content
-app.use(auth);
+// Set authorization middleware
+// app.use(auth);
 
 // use compress middleware to gzip content
 app.use(compression());
@@ -70,18 +70,19 @@ app.use('/gui', function(req, res) {
 	var urlPath = req.url.toString();
 
     proxy.on('proxyReq', function(proxyReq) {
-    	proxyReq.setHeader('Authorization', 'Basic ' + new Buffer(remoteUser + ':' + remotePass).toString('base64'));
+    	proxyReq.setHeader('Authorization', 'Basic ' + 
+    	    new Buffer(req.headers['x-custom-utuser'] + ':' + req.headers['x-custom-utpass']).toString('base64'));
     });
 
 	proxy.web(req, res, {
-		target: 'http://' + remoteDns + ':9002/gui' + urlPath
+		target: 'http://' + req.headers['x-custom-host'] + ':9002/gui' + urlPath
 	});
 });
 
 app.use('/ping', function(req, res) {
 	var status = {};
 	var client = net.connect({
-		host: remoteDns,
+		host: req.headers['x-custom-host'],
 		port: 22
 	}, function() { //'connect' listener
 		status = {
@@ -111,18 +112,18 @@ app.use('/ping', function(req, res) {
 });
 
 app.use('/wakeup', function(req, res) {
-	dns.resolve(remoteDns, function(error, addresses) {
+	dns.resolve(req.headers['x-custom-host'], function(error, addresses) {
 		if (error) {
 			res.json({
 				statusCode: 4,
 				status: 'Error occurred while resolving address'
 			});
 		} else if (addresses.length > 0) {
-			wol.wake(macAddress, {
+			wol.wake(req.headers['x-custom-mac'], {
 				address: addresses[0],
 				port: 50000
 			}, function(error) {
-				console.log(macAddress);
+				console.log(req.headers['x-custom-mac']);
 				console.log(addresses[0]);
 
 				if (error) {
@@ -143,7 +144,7 @@ app.use('/wakeup', function(req, res) {
 });
 
 app.use('/shutdown', function(req, res) {
-	dns.resolve(remoteDns, function(error, addresses) {
+	dns.resolve(req.headers['x-custom-host'], function(error, addresses) {
 		if (error) {
 			res.json({
 				statusCode: 4,
@@ -191,8 +192,8 @@ app.use('/shutdown', function(req, res) {
 			.connect({
 				host: addresses[0],
 				port: 22,
-				username: remoteSshUser,
-				password: remoteSshPassword
+				username: req.headers['x-custom-sshuser'],
+				password: req.headers['x-custom-sshpass']
 			});
 		}
 	});

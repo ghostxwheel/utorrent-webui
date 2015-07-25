@@ -16,7 +16,7 @@
                                 </customData>
                                 <content>
                                     <Input id="torrentUrl" width="100%"></Input>
-                                    <Button text="Add" width="100px" press="onAddUrl" ></Button>
+                                    <Button text="Add" width="100%" press="onAddUrl" ></Button>
                                 </content>
                             </Panel>
                         </content>
@@ -75,6 +75,35 @@
                                     </SegmentedButton>
                                 </content>
                             </Panel>
+                        </content>
+                    </IconTabFilter>
+                    <IconTabFilter text="Settings" key="Settings" icon="sap-icon://settings">
+                        <content>
+                            <Panel headerText="Remote machine address">
+                                <content>
+                                    <Label text="Host (IP or hostname)" labelFor="host" />
+                                    <Input id="host" width="100%" value="{settings>/host}" />
+                                    <Label text="MAC Address" labelFor="mac" />
+                                    <Input id="mac" width="100%" value="{settings>/mac}" />
+                                </content>
+                            </Panel>
+                            <Panel headerText="Remote uTorrent settings">
+                                <content>
+                                    <Label text="Username" labelFor="utUser" />
+                                    <Input id="utUser" width="100%" value="{settings>/utUser}" />
+                                    <Label text="Password" labelFor="utPass" />
+                                    <Input id="utPass" width="100%" type="Password" value="{settings>/utPass}" />
+                                </content>
+                            </Panel>
+                            <Panel headerText="Remote SSH settings (for shutdown function)">
+                                <content>
+                                    <Label text="Username" labelFor="sshUser" />
+                                    <Input id="sshUser" width="100%" value="{settings>/sshUser}" />
+                                    <Label text="Password" labelFor="sshPass" />
+                                    <Input id="sshPass" width="100%" type="Password" value="{settings>/sshPass}" />
+                                </content>
+                            </Panel>
+                            <Button text="Save settings" width="100%" press="handleSaveSettings" />
                         </content>
                     </IconTabFilter>
                 </items>

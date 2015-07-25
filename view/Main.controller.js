@@ -36,8 +36,10 @@ sap.ui.controller("view.Main", {
 	 * @memberOf view.Main
 	 */
 	onInit: function() {
-	    jQuery.ajaxSetup({cache: true});
-	    
+		jQuery.ajaxSetup({
+			cache: true
+		});
+
 		var oEventBus = sap.ui.getCore().getEventBus();
 		oEventBus.subscribe("app", "load", this.onLoad, this);
 
@@ -47,8 +49,54 @@ sap.ui.controller("view.Main", {
 		this.oStatusModel = new sap.ui.model.json.JSONModel();
 		this.getView().setModel(this.oStatusModel, "status");
 
+		this.oSettingsModel = new sap.ui.model.json.JSONModel();
+		this.getView().setModel(this.oSettingsModel, "settings");
+
+		// load settings from localStorage
+		this.loadSettings();
+
 		this.changeRemoteMachineStatus("unknown");
 		this.queryRemoteServerStatus();
+	},
+
+	handleSaveSettings: function() {
+		if (!window.localStorage) {
+			return;
+		}
+
+		window.localStorage.settings = JSON.stringify(this.oSettingsModel.getData());
+
+		this.setupAjaxHeaders();
+
+		alert("Settings saved.");
+	},
+
+	loadSettings: function() {
+		if (!window.localStorage) {
+			alert("No local storage capability. No settings will be loaded/saved.");
+
+			return;
+		}
+
+		if (window.localStorage.settings) {
+			var settings = JSON.parse(window.localStorage.settings);
+
+			this.oSettingsModel.setData(settings);
+			this.setupAjaxHeaders();
+		}
+	},
+
+	setupAjaxHeaders: function() {
+		var oHeaders = {};
+		var oSettings = this.oSettingsModel.getData();
+
+		jQuery.each(oSettings, function(strKey, strValue) {
+			oHeaders["x-custom-" + strKey] = strValue;
+		});
+
+		jQuery.ajaxSetup({
+			headers: oHeaders
+		});
 	},
 
 	onRefresh: function() {
@@ -95,7 +143,7 @@ sap.ui.controller("view.Main", {
 
 	onLoad: function() {
 		this.queryRemoteServerStatus(function() {
-		    this.queryTorrentList();
+			this.queryTorrentList();
 		}.bind(this));
 	},
 
