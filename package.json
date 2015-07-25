@@ -15,7 +15,8 @@
 	  "http-proxy": "1.11.1",
 	  "basic-auth-connect": "1.0.0",
 	  "wake_on_lan": "0.0.4",
-	  "ssh2": "0.4.10"
+	  "ssh2": "0.4.10",
+	  "connect-cache-manifest": "0.2.2"
 	},
 	"eslintConfig": {
 	    "env": {
