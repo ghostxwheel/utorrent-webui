@@ -7,6 +7,7 @@ var express = require("express"),
 	wol = require("wake_on_lan"),
 	dns = require("dns"),
 	ssh2Client = require("ssh2").Client,
+	//path = require("path"),
 	serveIndex = require("serve-index");
 
 var app = express(),
@@ -24,21 +25,19 @@ var app = express(),
 	remoteSshUser = process.env.REMOTE_SSH_USER || "admin",
 	remoteSshPassword = process.env.REMOTE_SSH_PASSWORD || "pass",
 	publicPath = "/",
-	directory = __dirname,
 	launchUrl = "http://" + host + ":" + port + publicPath,
 	year = 60 * 60 * 24 * 365 * 1000;
-	
-console.log(process.env.AUTH_USER);
-console.log(process.env.AUTH_PASS);
-console.log(process.env.REMOTE_MAC);
-console.log(process.env.REMOTE_ADDRESS);
-console.log(process.env.AUTH_REMOTE_USER);
-console.log(process.env.AUTH_REMOTE_PASS);
-console.log(process.env.REMOTE_SSH_USER);
-console.log(process.env.REMOTE_SSH_PASSWORD);
 
-// Authentication middleware
-app.use(basicAuth(user, pass));
+var auth = function(req, res, next) {
+	if (req.url.indexOf("/public/") !== 0) {
+		basicAuth(user, pass);
+	}
+
+	next();
+};
+
+// use compress middleware to gzip content
+app.use(auth);
 
 // use compress middleware to gzip content
 app.use(compression());
@@ -47,13 +46,13 @@ app.use(compression());
 express.static.mime.default_type = "text/xml";
 
 // serve up content directory showing hidden (leading dot) files
-app.use(publicPath, express.static(directory, {
+app.use(publicPath, express.static(__dirname, {
 	maxAge: year,
 	hidden: true
 }));
 
 // enable directory listing
-app.use("/", serveIndex(__dirname, {
+app.use(publicPath, serveIndex(__dirname, {
 	"icons": true
 }));
 
@@ -141,24 +140,24 @@ app.use("/shutdown", function(req, res) {
 				status: "Error occurred while resolving address"
 			});
 		} else if (addresses.length > 0) {
-		    var status = {
+			var status = {
 				statusCode: 0,
 				status: "Shutdown sent to remote server"
 			};
-		    
+
 			ssh2client
 				.on("ready", function() {
 					console.log("Client :: ready");
 					ssh2client.exec("shutdown /s /t 0", function(err, stream) {
 						if (err) {
-						    status = {
-        						statusCode: 4,
-        						status: "Error occured: "
-        					};
-        					
-        					return;
+							status = {
+								statusCode: 4,
+								status: "Error occured: "
+							};
+
+							return;
 						}
-						
+
 						stream.on("close", function(code, signal) {
 							console.log("Stream :: close :: code: " + code + ", signal: " + signal);
 							ssh2client.end();
@@ -169,15 +168,15 @@ app.use("/shutdown", function(req, res) {
 						});
 					});
 				})
-				
-				.on("error", function(error) {
-				    // Nothing
-				    console.log(error);
-				})
-				
-				.on("close", function() {
-        			res.json(status);
-				})
+
+			.on("error", function(error) {
+				// Nothing
+				console.log(error);
+			})
+
+			.on("close", function() {
+				res.json(status);
+			})
 
 			.connect({
 				host: addresses[0],
